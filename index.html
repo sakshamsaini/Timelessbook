@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Timeless Book AR</title>
+  
+  <!-- A-Frame & MindAR -->
+  <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
+
+  <style>
+    html, body { margin: 0; height: 100%; background: #000; }
+    #startUI { position: fixed; inset: 0; display: grid; place-items: center; background: #000; }
+    #startBtn { padding: 14px 24px; font-size: 16px; border-radius: 12px; border: none; background: #00d1b2; color: #081013; cursor: pointer; }
+    #tapHint { position: fixed; bottom: 10px; left: 50%; transform: translateX(-50%); padding: 6px 12px; border-radius: 8px; background: rgba(0,0,0,0.55); color: #fff; font-size: 14px; display: none; }
+  </style>
+</head>
+<body>
+  <!-- Start Screen -->
+  <div id="startUI">
+    <button id="startBtn">Start AR</button>
+  </div>
+  <div id="tapHint">Tap video for sound</div>
+
+  <!-- AR Scene -->
+  <a-scene
+    mindar-image="imageTargetSrc: ./targets.mind; filterMinCF: 0.0001; filterBeta: 0.001;"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
+    embedded
+    id="scene">
+
+    <a-camera></a-camera>
+  </a-scene>
+
+  <script>
+    // ==================== MEDIA MAP ====================
+    // Map each targetIndex (0-59) to either audio or video CDN URLs
+    const MEDIA_MAP = {
+      0: { type: 'audio', url: 'https://cdn.example.com/audio/a0.mp3' },
+      1: { type: 'video', url: 'https://cdn.example.com/video/v1.mp4' },
+      2: { type: 'video', url: 'https://cdn.example.com/video/v2.mp4' },
+      // ... continue for all 60 targets
+    };
+
+    // ==================== ELEMENTS ====================
+    const videoEl = document.createElement("video");
+    videoEl.setAttribute("preload", "metadata");
+    videoEl.setAttribute("playsinline", "");
+    videoEl.setAttribute("crossorigin", "anonymous");
+    videoEl.muted = true; // start muted for autoplay
+
+    const audioEl = document.createElement("audio");
+    audioEl.setAttribute("crossorigin", "anonymous");
+
+    const sceneEl = document.querySelector("#scene");
+    const tapHint = document.querySelector("#tapHint");
+
+    let videoPlane = null;
+
+    // ==================== START HANDLER ====================
+    document.querySelector("#startBtn").addEventListener("click", () => {
+      document.querySelector("#startUI").style.display = "none";
+      sceneEl.components["mindar-image"].start();
+    });
+
+    // ==================== TARGET EVENTS ====================
+    sceneEl.addEventListener("targetFound", (e) => {
+      const idx = e.detail.targetIndex;
+      const media = MEDIA_MAP[idx];
+      if (!media) return;
+
+      if (media.type === "video") {
+        // prepare video
+        videoEl.src = media.url;
+        videoEl.loop = true;
+        videoEl.play().catch(err => console.log("Video play error", err));
+
+        // create plane if not exists
+        if (!videoPlane) {
+          videoPlane = document.createElement("a-video");
+          videoPlane.setAttribute("position", "0 0 0");
+          videoPlane.setAttribute("rotation", "0 0 0");
+          videoPlane.setAttribute("width", 1);
+          videoPlane.setAttribute("height", 0.5625);
+          videoPlane.setAttribute("src", "#dynamicVideoTex");
+
+          // add video texture to assets
+          const assets = document.createElement("a-assets");
+          const videoAsset = document.createElement("video");
+          videoAsset.setAttribute("id", "dynamicVideoTex");
+          videoAsset.setAttribute("preload", "auto");
+          videoAsset.setAttribute("playsinline", "");
+          videoAsset.setAttribute("crossorigin", "anonymous");
+          assets.appendChild(videoAsset);
+          sceneEl.appendChild(assets);
+
+          sceneEl.appendChild(videoPlane);
+        }
+
+        // update asset src
+        const videoAsset = document.querySelector("#dynamicVideoTex");
+        videoAsset.src = media.url;
+        videoAsset.play();
+
+        tapHint.style.display = "block";
+        videoPlane.setAttribute("visible", "true");
+      }
+      else if (media.type === "audio") {
+        audioEl.src = media.url;
+        audioEl.loop = false;
+        audioEl.play().catch(err => console.log("Audio play error", err));
+      }
+    });
+
+    sceneEl.addEventListener("targetLost", (e) => {
+      // stop media when target is lost
+      videoEl.pause();
+      audioEl.pause();
+      if (videoPlane) videoPlane.setAttribute("visible", "false");
+      tapHint.style.display = "none";
+    });
+
+    // ==================== TAP TO UNMUTE ====================
+    tapHint.addEventListener("click", () => {
+      videoEl.muted = false;
+      audioEl.muted = false;
+      tapHint.style.display = "none";
+    });
+  </script>
+</body>
+</html>
