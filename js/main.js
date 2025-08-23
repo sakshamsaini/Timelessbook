@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // --- Create <video> asset ---
     const video = document.createElement("video");
     video.setAttribute("id", `video-${index}`);
-    video.setAttribute("src", media.src);
+    video.setAttribute("src", media.url);
     video.setAttribute("preload", "auto");
     video.setAttribute("playsinline", "true");
     video.setAttribute("webkit-playsinline", "true");
