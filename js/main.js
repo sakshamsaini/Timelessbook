@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       aVideo.setAttribute("src", `#video-${targetIndex}`);
       aVideo.setAttribute("width", "1");
       aVideo.setAttribute("height", "0.6");
-      aVideo.setAttribute("position", "0 0 0");
+      aVideo.setAttribute("position", "0 0 0.1");
       anchor.appendChild(aVideo);
       anchorsContainer.appendChild(anchor);
 
