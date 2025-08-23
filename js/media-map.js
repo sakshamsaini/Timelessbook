@@ -2,7 +2,7 @@
 // Each entry now has { type, url } for proper handling in main.js
 
 const MEDIA_MAP = {
-  0: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/11_12_Taj_AR%20Transition_001.mp4" },
+  0: { type: "video", url: "https://www.w3schools.com/tags/mov_bbb.mp4" },
   1: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/20_21_Police%20Station_AR%20Transition_002.mp4" },
   2: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/30_31_Flora%20Fountain_AR%20Transition_001.mp4" },
   3: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/36_Horniman_AR%20Transition_002.mp4" },
