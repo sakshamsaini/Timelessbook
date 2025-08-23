@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Create <video> element
     const video = document.createElement("video");
     video.setAttribute("id", "video" + index);
-    video.setAttribute("src", media.src);
+    video.setAttribute("src", media.url);
     video.setAttribute("loop", "");
     video.setAttribute("playsinline", "");
     video.setAttribute("muted", "true");   // Important for autoplay
