@@ -1,47 +1,74 @@
-// js/main.js
-window.addEventListener("DOMContentLoaded", () => {
-  const sceneEl = document.querySelector("a-scene");
+// main.js
 
-  // Start AR on button click (policy-friendly)
-  document.querySelector("#startButton").addEventListener("click", async () => {
-    await sceneEl.systems["mindar-image-system"].start();
-    console.log("✅ AR started");
+document.addEventListener("DOMContentLoaded", () => {
+  const assets = document.querySelector("#assets");
+  const anchorsContainer = document.querySelector("#anchors");
+  const overlay = document.querySelector("#overlay");
+  const startButton = document.querySelector("#startButton");
+
+  // Preload media elements
+  Object.entries(MEDIA_MAP).forEach(([targetIndex, data]) => {
+    if (data.type === "video") {
+      const vid = document.createElement("video");
+      vid.setAttribute("id", `video-${targetIndex}`);
+      vid.setAttribute("src", data.url);
+      vid.setAttribute("loop", "");
+      vid.setAttribute("preload", "auto");
+      vid.setAttribute("playsinline", "");
+      vid.setAttribute("webkit-playsinline", "");
+      vid.muted = true; // autoplay allowed
+      assets.appendChild(vid);
+
+      // Create anchor entity
+      const anchor = document.createElement("a-entity");
+      anchor.setAttribute("mindar-image-target", `targetIndex: ${targetIndex}`);
+      const aVideo = document.createElement("a-video");
+      aVideo.setAttribute("src", `#video-${targetIndex}`);
+      aVideo.setAttribute("width", "1");
+      aVideo.setAttribute("height", "0.6");
+      aVideo.setAttribute("position", "0 0 0");
+      anchor.appendChild(aVideo);
+      anchorsContainer.appendChild(anchor);
+
+      // Event listeners
+      anchor.addEventListener("targetFound", () => {
+        vid.play();
+      });
+      anchor.addEventListener("targetLost", () => {
+        vid.pause();
+      });
+
+    } else if (data.type === "audio") {
+      const aud = document.createElement("audio");
+      aud.setAttribute("id", `audio-${targetIndex}`);
+      aud.setAttribute("src", data.url);
+      aud.setAttribute("preload", "auto");
+      assets.appendChild(aud);
+
+      const anchor = document.createElement("a-entity");
+      anchor.setAttribute("mindar-image-target", `targetIndex: ${targetIndex}`);
+      anchorsContainer.appendChild(anchor);
+
+      anchor.addEventListener("targetFound", () => {
+        aud.play();
+      });
+      anchor.addEventListener("targetLost", () => {
+        aud.pause();
+        aud.currentTime = 0;
+      });
+    }
   });
 
-  // Shared <video> asset
-  const videoEl = document.querySelector("#dynamicVideoTex");
-  const videoPlane = document.querySelector("#videoPlane");
+  // Unlock autoplay on first tap
+  startButton.addEventListener("click", () => {
+    overlay.style.display = "none";
 
-  // Register target listeners for all 60
-  for (let i = 0; i < 60; i++) {
-    const anchor = document.querySelector(`#target-${i}`);
-    if (!anchor) continue;
-
-    anchor.addEventListener("targetFound", () => {
-      console.log(`🎯 Target ${i} found`);
-      const mediaUrl = MEDIA_MAP[i];
-
-      if (!mediaUrl) return;
-
-      if (mediaUrl.endsWith(".mp3")) {
-        // Play audio
-        const audio = new Audio(mediaUrl);
-        audio.play().catch(err => console.warn("Audio play blocked:", err));
-      } else {
-        // Video
-        videoEl.src = mediaUrl;
-        videoEl.load();
-        videoEl.play().catch(err => console.warn("Video play blocked:", err));
-        anchor.appendChild(videoPlane);
+    // Unmute all videos after user gesture
+    Object.entries(MEDIA_MAP).forEach(([i, data]) => {
+      if (data.type === "video") {
+        const vid = document.getElementById(`video-${i}`);
+        vid.muted = false;
       }
     });
-
-    anchor.addEventListener("targetLost", () => {
-      console.log(`❌ Target ${i} lost`);
-      videoEl.pause();
-      if (videoPlane.parentNode === anchor) {
-        anchor.removeChild(videoPlane);
-      }
-    });
-  }
+  });
 });
