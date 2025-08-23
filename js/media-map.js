@@ -64,4 +64,3 @@ const MEDIA_MAP = {
   59: { type: "audio", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2098-99_%20Siddhivinayak%20Temple.mp3" }
 };
 
-export default MEDIA_MAP;
