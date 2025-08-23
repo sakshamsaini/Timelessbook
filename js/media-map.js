@@ -1,6 +1,6 @@
 // js/media-map.js
 const MEDIA_MAP = {
-  0: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+  0: "https://imagekit.io/player/embed/fwqnm0w2o/sample-video.mp4",
   1: "https://d2wgmlzg2z28oi.cloudfront.net/20_21_Police%20Station_AR%20Transition_002.mp4",
   2: "https://d2wgmlzg2z28oi.cloudfront.net/30_31_Flora%20Fountain_AR%20Transition_001.mp4",
   3: "https://d2wgmlzg2z28oi.cloudfront.net/36_Horniman_AR%20Transition_002.mp4",
