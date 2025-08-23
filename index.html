@@ -2,41 +2,50 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <title>MindAR Multi Target</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+
+    <!-- A-Frame + MindAR -->
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/mind-ar/dist/mindar-image-aframe.prod.js"></script>
-    <script src="js/media-map.js"></script>
-    <script src="js/main.js"></script>
+
+    <!-- Our scripts -->
+    <script src="./media-map.js"></script>
+    <script src="./main.js"></script>
+
     <style>
-      body, html { margin: 0; overflow: hidden; height: 100%; }
-      #startButton {
-        position: absolute; top: 10px; left: 10px;
-        padding: 10px 20px; background: #000; color: #fff;
-        border-radius: 5px; z-index: 9999;
+      body { margin: 0; overflow: hidden; }
+      #overlay {
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.7);
+        color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
       }
     </style>
   </head>
+
   <body>
-    <button id="startButton">Start AR</button>
+    <!-- Overlay to unlock autoplay -->
+    <div id="overlay">
+      <button id="startButton">▶ Tap to Start AR</button>
+    </div>
 
     <a-scene
-      mindar-image="imageTargetSrc: ./assets/targets.mind; autoStart: false;"
+      mindar-image="imageTargetSrc: ./targets.mind;"
+      color-space="sRGB"
+      renderer="colorManagement: true, physicallyCorrectLights"
       vr-mode-ui="enabled: false"
       device-orientation-permission-ui="enabled: false"
-      embedded
     >
-      <a-assets>
-        <video id="dynamicVideoTex" autoplay loop muted playsinline crossorigin="anonymous"></video>
-      </a-assets>
+      <a-assets id="assets"></a-assets>
 
-      <!-- Anchors for all 60 targets -->
-      <a-entity id="anchors">
-        <!-- Keep these dynamically created or manually copy for 60 -->
-        <a-entity mindar-image-target="targetIndex: 0" id="target-0"></a-entity>
-        <a-entity mindar-image-target="targetIndex: 1" id="target-1"></a-entity>
-        <!-- ... repeat up to 59 -->
-      </a-entity>
+      <!-- Anchors for 60 targets -->
+      <a-entity id="anchors"></a-entity>
 
-      <a-video id="videoPlane" src="#dynamicVideoTex" width="1" height="0.6" position="0 0 0" rotation="0 0 0"></a-video>
       <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
     </a-scene>
   </body>
