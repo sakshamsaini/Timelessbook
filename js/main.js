@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scene = document.querySelector("a-scene");
 
-  mediaMap.forEach((media, index) => {
+  media-map.forEach((media, index) => {
     // Create hidden <video> element
     const video = document.createElement("video");
     video.setAttribute("id", "video" + index);
