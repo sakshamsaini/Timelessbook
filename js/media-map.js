@@ -1,6 +1,6 @@
 // js/media-map.js
 const MEDIA_MAP = {
-  0: "https://d2wgmlzg2z28oi.cloudfront.net/11_12_Taj_AR%20Transition_001.mp4",
+  0: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
   1: "https://d2wgmlzg2z28oi.cloudfront.net/20_21_Police%20Station_AR%20Transition_002.mp4",
   2: "https://d2wgmlzg2z28oi.cloudfront.net/30_31_Flora%20Fountain_AR%20Transition_001.mp4",
   3: "https://d2wgmlzg2z28oi.cloudfront.net/36_Horniman_AR%20Transition_002.mp4",
@@ -20,7 +20,7 @@ const MEDIA_MAP = {
   17: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2022_%20CSMVS.mp4",
   18: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2024-25_%20David%20Sassoon%20Library.mp4",
   19: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2026-27_%20Kala%20Ghoda.mp4",
-  20: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2028_%20Volga%20Paan,%20Fort.mp4",
+  20: "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4",
   21: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2029_%20Amrish%20Arora,%20MD%20of%20Fountain%20Hospitality%20Pvt%20Ltd.,%20on%20Fountain%20Sizzlers.mp3",
   22: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2030-31_%20Flora%20Fountain.mp4",
   23: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2032-33_%20Point%20Zero.mp4",
