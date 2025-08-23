@@ -1,48 +1,52 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scene = document.querySelector("a-scene");
 
-  MEDIA_MAP.forEach((media, index) => {
-    // Create hidden <video> element
+  // Loop through MEDIA_MAP
+  Object.keys(MEDIA_MAP).forEach((key) => {
+    const media = MEDIA_MAP[key];
+    const index = parseInt(key);
+
+    // --- Create <video> asset ---
     const video = document.createElement("video");
-    video.setAttribute("id", "video" + index);
+    video.setAttribute("id", `video-${index}`);
     video.setAttribute("src", media.src);
-    video.setAttribute("loop", "");
-    video.setAttribute("playsinline", "");
     video.setAttribute("preload", "auto");
-    video.setAttribute("crossorigin", "anonymous");
-    video.style.display = "none";
-    document.body.appendChild(video);
+    video.setAttribute("playsinline", "true");
+    video.setAttribute("webkit-playsinline", "true");
+    video.setAttribute("crossorigin", "anonymous"); // fix CORS issue
+    video.setAttribute("loop", "true");
+    video.style.display = "none"; // keep hidden
+    scene.appendChild(video);
 
-    // Marker
+    // --- Create marker entity ---
     const marker = document.createElement("a-entity");
-    marker.setAttribute("mindar-image-target", "targetIndex: " + index);
+    marker.setAttribute("mindar-image-target", `targetIndex: ${index}`);
 
-    // Video plane
-    const plane = document.createElement("a-video");
-    plane.setAttribute("id", "plane" + index);
-    plane.setAttribute("src", "#video" + index);
-    plane.setAttribute("width", "1");
-    plane.setAttribute("height", "0.6");
-    plane.setAttribute("position", "0 0 0");
-    marker.appendChild(plane);
+    // --- Create video plane ---
+    const videoPlane = document.createElement("a-plane");
+    videoPlane.setAttribute("id", `video-plane-${index}`);
+    videoPlane.setAttribute("material", `src: #video-${index}; transparent: true; opacity: 1`);
+    videoPlane.setAttribute("width", "1");
+    videoPlane.setAttribute("height", "0.6");
+    videoPlane.setAttribute("position", "0 0 0");
+    marker.appendChild(videoPlane);
 
-    // Play button image (overlayed on video)
+    // --- Create play button overlay ---
     const playButton = document.createElement("a-image");
-    playButton.setAttribute("src", "#preview-image"); // play.png from assets
-    playButton.setAttribute("position", "0 0 0.01"); // slightly above video
-    playButton.setAttribute("width", "0.2");
-    playButton.setAttribute("height", "0.2");
+    playButton.setAttribute("src", "#preview-image");
     playButton.setAttribute("class", "clickable");
+    playButton.setAttribute("position", "0 0 0.01"); // slightly above plane
+    playButton.setAttribute("scale", "0.2 0.2 0.2");
     marker.appendChild(playButton);
 
-    // Handle Play click
+    // --- Play button logic ---
     playButton.addEventListener("click", () => {
-      video.play().then(() => {
-        playButton.setAttribute("visible", "false"); // hide play button
-      }).catch(err => console.error("Play failed:", err));
+      if (video.paused) {
+        video.play();
+        playButton.setAttribute("visible", "false"); // hide play button when playing
+      }
     });
 
-    // Add marker to scene
     scene.appendChild(marker);
   });
 });
