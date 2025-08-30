@@ -1,5 +1,5 @@
 const MEDIA_MAP = {
-  0:  { type: "video", url: "http://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Dhwani%20Rathod_Uppercase%20%5BPg%209%5D.mp4" },
+  0:  { type: "audio", url: "http://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Pg%2084_%20Jain%20Temple.mp3" },
   1:  { type: "video", url: "http://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Dhwani%20Rathod_Uppercase%20%5BPg%209%5D.mp4" },
   2:  { type: "video", url: "http://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Dhwani%20Rathod_Uppercase%20%5BPg%209%5D.mp4" },
   3:  { type: "video", url: "http://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Dhwani%20Rathod_Uppercase%20%5BPg%209%5D.mp4" },
