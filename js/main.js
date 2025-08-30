@@ -1,65 +1,87 @@
 document.addEventListener("DOMContentLoaded", () => {
   const scene = document.querySelector("a-scene");
 
-  // Loop through MEDIA_MAP
   Object.keys(MEDIA_MAP).forEach((key) => {
     const media = MEDIA_MAP[key];
     const index = parseInt(key);
 
-    // --- Create <video> asset ---
-    const video = document.createElement("video");
-    video.setAttribute("id", `video-${index}`);
-    video.setAttribute("src", media.url);
-    video.setAttribute("preload", "auto");
-    video.setAttribute("playsinline", "true");
-    video.setAttribute("webkit-playsinline", "true");
-    video.setAttribute("crossorigin", "anonymous"); // fix CORS issue
-    video.setAttribute("loop", "true");
-    video.style.display = "none"; // keep hidden
-    scene.appendChild(video);
+    let assetEl;
 
-    // --- Create marker entity ---
+    if (media.type === "video") {
+      // --- Create <video> asset ---
+      assetEl = document.createElement("video");
+      assetEl.setAttribute("id", `media-${index}`);
+      assetEl.setAttribute("src", media.url);
+      assetEl.setAttribute("preload", "auto");
+      assetEl.setAttribute("playsinline", "true");
+      assetEl.setAttribute("webkit-playsinline", "true");
+      assetEl.setAttribute("crossorigin", "anonymous");
+      assetEl.setAttribute("loop", "true");
+      assetEl.style.display = "none";
+    } else if (media.type === "audio") {
+      // --- Create <audio> asset ---
+      assetEl = document.createElement("audio");
+      assetEl.setAttribute("id", `media-${index}`);
+      assetEl.setAttribute("src", media.url);
+      assetEl.setAttribute("preload", "auto");
+      assetEl.setAttribute("crossorigin", "anonymous");
+      assetEl.setAttribute("loop", "true");
+    }
+
+    scene.appendChild(assetEl);
+
+    // --- Marker entity ---
     const marker = document.createElement("a-entity");
     marker.setAttribute("mindar-image-target", `targetIndex: ${index}`);
 
-    // --- Create video plane ---
-    const videoPlane = document.createElement("a-plane");
-    videoPlane.setAttribute("id", `video-plane-${index}`);
-    videoPlane.setAttribute("material", `src: #video-${index}; transparent: true; opacity: 1`);
-    videoPlane.setAttribute("width", "1");
-    videoPlane.setAttribute("height", "0.6");
-    videoPlane.setAttribute("position", "0 0 0");
-    videoPlane.setAttribute("visible", "false"); // hidden by default
-    marker.appendChild(videoPlane);
+    let playButton;
+    let mediaPlane;
 
-    // --- Create play button overlay ---
-    const playButton = document.createElement("a-image");
-    playButton.setAttribute("src", "#preview-image");
-    playButton.setAttribute("class", "clickable");
-    playButton.setAttribute("position", "0 0 0.01"); // slightly above plane
-    playButton.setAttribute("scale", "0.2 0.2 0.2");
-    playButton.setAttribute("visible", "false"); // hidden until marker is found
-    marker.appendChild(playButton);
+    if (media.type === "video") {
+      // --- Video plane ---
+      mediaPlane = document.createElement("a-plane");
+      mediaPlane.setAttribute("id", `media-plane-${index}`);
+      mediaPlane.setAttribute("material", `src: #media-${index}; transparent: true; opacity: 1`);
+      mediaPlane.setAttribute("width", "1");
+      mediaPlane.setAttribute("height", "0.6");
+      mediaPlane.setAttribute("visible", "false");
+      marker.appendChild(mediaPlane);
 
-    // --- Play button logic ---
-    playButton.addEventListener("click", () => {
-      if (video.paused) {
-        video.play();
-        playButton.setAttribute("visible", "false"); // hide play button when playing
+      // --- Play button overlay ---
+      playButton = document.createElement("a-image");
+      playButton.setAttribute("src", "#preview-image");
+      playButton.setAttribute("class", "clickable");
+      playButton.setAttribute("position", "0 0 0.01");
+      playButton.setAttribute("scale", "0.2 0.2 0.2");
+      playButton.setAttribute("visible", "false");
+      marker.appendChild(playButton);
+
+      playButton.addEventListener("click", () => {
+        if (assetEl.paused) {
+          assetEl.play();
+          playButton.setAttribute("visible", "false");
+        }
+      });
+    }
+
+    // --- Marker logic ---
+    marker.addEventListener("targetFound", () => {
+      if (media.type === "video") {
+        mediaPlane.setAttribute("visible", "true");
+        playButton.setAttribute("visible", "true");
+      } else if (media.type === "audio") {
+        assetEl.play();
       }
     });
 
-    // --- Marker events ---
-    marker.addEventListener("targetFound", () => {
-      videoPlane.setAttribute("visible", "true");
-      playButton.setAttribute("visible", "true"); // show play button
-    });
-
     marker.addEventListener("targetLost", () => {
-      video.pause();
-      video.currentTime = 0; // reset video
-      videoPlane.setAttribute("visible", "false");
-      playButton.setAttribute("visible", "false");
+      assetEl.pause();
+      assetEl.currentTime = 0;
+      if (media.type === "video") {
+        mediaPlane.setAttribute("visible", "false");
+        playButton.setAttribute("visible", "false");
+        mediaPlane.setAttribute("material", "src:");
+      }
     });
 
     scene.appendChild(marker);
