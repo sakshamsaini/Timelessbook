@@ -66,23 +66,34 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- Marker logic ---
     marker.addEventListener("targetFound", () => {
-      if (media.type === "video") {
-        mediaPlane.setAttribute("visible", "true");
-        playButton.setAttribute("visible", "true");
-      } else if (media.type === "audio") {
-        assetEl.play();
-      }
-    });
+  if (media.type === "video") {
+    mediaPlane.object3D.visible = true;
+    mediaPlane.setAttribute("material", `src: #media-${index}; transparent: true; opacity: 1`);
+    playButton.object3D.visible = true;
+  } else if (media.type === "audio") {
+    assetEl.play();
+  }
+});
 
     marker.addEventListener("targetLost", () => {
-      assetEl.pause();
-      assetEl.currentTime = 0;
-      if (media.type === "video") {
-        mediaPlane.setAttribute("visible", "false");
-        playButton.setAttribute("visible", "false");
-        mediaPlane.setAttribute("material", "src:");
-      }
-    });
+  if (media.type === "video") {
+    // Pause and reset instantly
+    assetEl.pause();
+    assetEl.currentTime = 0;
+
+    // Force-hide geometry immediately
+    mediaPlane.object3D.visible = false;
+    playButton.object3D.visible = false;
+
+    // Clear material reference (prevents ghost frame)
+    mediaPlane.removeAttribute("material");
+    mediaPlane.setAttribute("material", "transparent: true; opacity: 0;");
+  } else if (media.type === "audio") {
+    assetEl.pause();
+    assetEl.currentTime = 0;
+  }
+});
+
 
     scene.appendChild(marker);
   });
