@@ -1,7 +1,7 @@
 // media_map.js
 
 const MEDIA_MAP = {
-  0: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/11_12_Taj_AR%20Transition_001.mp4" },
+  0: { type: "video", url: "https://d1ewlcau89ptzk.cloudfront.net/Phase2_FinalRecieved_Compressed/Dhwani Rathod_Uppercase [Pg 9].mp4" },
   1: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/20_21_Police%20Station_AR%20Transition_002.mp4" },
   2: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/30_31_Flora%20Fountain_AR%20Transition_001.mp4" },
   3: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/36_Horniman_AR%20Transition_002.mp4" },
