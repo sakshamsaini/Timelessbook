@@ -22,7 +22,7 @@ const MEDIA_MAP = {
   18: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2024-25_%20David%20Sassoon%20Library.mp4" },
   19: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2026-27_%20Kala%20Ghoda.mp4" },
   20: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2028_%20Volga%20Paan,%20Fort.mp4" },
-  21: { type: "audio", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2029_%20Amrish%20Arora,%20MD%20of%20Fountain%20Hospitality%20Pvt%20Ltd.,%20on%20Fountain%20Sizzlers.mp3" },
+  21: { type: "audio", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg 29_ Amrish Arora, MD of Fountain Hospitality Pvt Ltd., on Fountain Sizzlers.mp3" },
   22: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2030-31_%20Flora%20Fountain.mp4" },
   23: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2032-33_%20Point%20Zero.mp4" },
   24: { type: "video", url: "https://d2wgmlzg2z28oi.cloudfront.net/Pg%2034_%20Vikas%20Dilawari%20in%20conversation%20with%20Anjana%20on%20the%20Uppercase%20podcast.mp4" },
